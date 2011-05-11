@@ -3,6 +3,8 @@ package org.fc.davannology.model;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 
@@ -11,15 +13,20 @@ public class Work {
 	
 	@Id
 	private Long id;
+	@Length(min=1, max=500)
 	private String description;
 	private Key<PositiveTechnique> positiveTechniqueKey;
 	private Key<NegativeTechnique> negativeTechniqueKey;
 	private Key<PreservationLocation> preservationLocationKey;
 	
+	@Length(max=500)
 	private String dates;
+	
 	private Integer width;
 	private Integer height;
+	@Length(max=500)
 	private String reference;
+	@Length(max=500)
 	private String comment;
 	
 	@Transient

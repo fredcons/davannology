@@ -2,6 +2,8 @@ package org.fc.davannology.model;
 
 import javax.persistence.Id;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.googlecode.objectify.annotation.Entity;
 
 @Entity
@@ -9,6 +11,7 @@ public class PreservationLocation {
 	
 	@Id
 	private Long id;
+	@Length(min=1, max=500)
 	private String name;
 	
 	/**
