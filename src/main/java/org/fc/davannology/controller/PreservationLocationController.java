@@ -3,6 +3,7 @@ package org.fc.davannology.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.fc.davannology.dao.PreservationLocationDAO;
 import org.fc.davannology.model.PreservationLocation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,20 +13,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyFactory;
-
 @Controller
 @RequestMapping("/preservationlocation")
 public class PreservationLocationController {
 	
 	@Autowired 
-	private ObjectifyFactory objectifyFactory;
+	private PreservationLocationDAO preservationLocationDAO;
 
 	@RequestMapping(value = "/list")
 	public String list(Model model) {
-		Objectify objectify = objectifyFactory.begin();
-		model.addAttribute("preservationLocations", objectify.query(PreservationLocation.class).list());
+		model.addAttribute("preservationLocations", preservationLocationDAO.findAll());
 		return "preservationlocation/list";
 	}
 	
@@ -37,8 +34,7 @@ public class PreservationLocationController {
 	
 	@RequestMapping(value = "/edit/{_id}") 
 	public String edit(@PathVariable("_id") Long id, Model model) {
-		Objectify objectify = objectifyFactory.begin();
-		model.addAttribute("preservationLocation", objectify.find(PreservationLocation.class, id));
+		model.addAttribute("preservationLocation", preservationLocationDAO.findById(id));
 		return "preservationlocation/edit";
 	}
 	
@@ -49,15 +45,13 @@ public class PreservationLocationController {
             return "preservationlocation/edit";
         }
 		model.asMap().clear();
-		Objectify objectify = objectifyFactory.begin();
-		objectify.put(preservationLocation);
+		preservationLocationDAO.save(preservationLocation);
         return "redirect:/preservationlocation/list";
 	}
 	
 	@RequestMapping(value = "/delete/{_id}") 
     public String delete(@PathVariable("_id") Long id, Model model) {
-        Objectify objectify = objectifyFactory.begin();
-        objectify.delete(PreservationLocation.class, id);
+		preservationLocationDAO.delete(id);
         return "redirect:/preservationlocation/list";
     }
 }

@@ -1,10 +1,15 @@
 package org.fc.davannology.controller;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.fc.davannology.dao.NegativeTechniqueDAO;
+import org.fc.davannology.dao.PositiveTechniqueDAO;
+import org.fc.davannology.dao.PreservationLocationDAO;
+import org.fc.davannology.dao.QueryFilter;
+import org.fc.davannology.dao.WorkDAO;
 import org.fc.davannology.model.NegativeTechnique;
 import org.fc.davannology.model.PositiveTechnique;
 import org.fc.davannology.model.PreservationLocation;
@@ -20,50 +25,41 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyFactory;
-import com.googlecode.objectify.Query;
+import com.google.appengine.repackaged.com.google.common.collect.Lists;
 
 @Controller
 @RequestMapping("/work")
 public class WorkController {
 	
+	@Autowired 
+	private WorkDAO workDAO;	
+	@Autowired 
+	private PositiveTechniqueDAO positiveTechniqueDAO;	
+	@Autowired 
+	private NegativeTechniqueDAO negativeTechniqueDAO;	
+	@Autowired 
+	private PreservationLocationDAO preservationLocationDAO;
+	
 	@ModelAttribute("preservationLocations")
-	public Collection<PreservationLocation> populatePreservationLocations() {
-		Objectify objectify = objectifyFactory.begin();
-		return objectify.query(PreservationLocation.class).list();
+	public List<PreservationLocation> populatePreservationLocations() {
+		return preservationLocationDAO.findAll();
 	}
 	
 	@ModelAttribute("positiveTechniques")
-	public Collection<PositiveTechnique> populatePositiveTechniques() {
-		Objectify objectify = objectifyFactory.begin();
-		return objectify.query(PositiveTechnique.class).list();
+	public List<PositiveTechnique> populatePositiveTechniques() {
+		return positiveTechniqueDAO.findAll();
 	}
 	
 	@ModelAttribute("negativeTechniques")
-	public Collection<NegativeTechnique> populateNegativeTechniques() {
-		Objectify objectify = objectifyFactory.begin();
-		return objectify.query(NegativeTechnique.class).list();
+	public List<NegativeTechnique> populateNegativeTechniques() {
+		return negativeTechniqueDAO.findAll();
 	}
-
-	
-	@Autowired 
-	private ObjectifyFactory objectifyFactory;
 
 	@RequestMapping(value = "/list")
 	public String list(Model model) {
-		Objectify objectify = objectifyFactory.begin();
-		Collection<Work> works = objectify.query(Work.class).list();
-		for (Work work : works) {
-		    if (work.getNegativeTechniqueKeyAsLong() != null) {
-		        work.setNegativeTechnique(objectify.find(NegativeTechnique.class, work.getNegativeTechniqueKeyAsLong()));
-		    } 
-		    if (work.getPositiveTechniqueKeyAsLong() != null) {
-                work.setPositiveTechnique(objectify.find(PositiveTechnique.class, work.getPositiveTechniqueKeyAsLong()));
-            } 
-		    if (work.getPreservationLocationKeyAsLong() != null) {
-                work.setPreservationLocation(objectify.find(PreservationLocation.class, work.getPreservationLocationKeyAsLong()));
-            } 
+		List<Work> works = workDAO.findAll();
+		for (Work currentWork : works) {
+			addRelations(currentWork);
 		}
 		model.addAttribute("works", works);
 		model.addAttribute("search", new Work());
@@ -78,15 +74,13 @@ public class WorkController {
 	
 	@RequestMapping(value = "/edit/{_id}") 
 	public String edit(@PathVariable("_id") Long id, Model model) {
-		Objectify objectify = objectifyFactory.begin();
-		model.addAttribute("work", objectify.find(Work.class, id));
+		model.addAttribute("work", workDAO.findById(id));
 		return "work/edit";
 	}
 	
 	@RequestMapping(value = "/view/{_id}") 
 	public String view(@PathVariable("_id") Long id, Model model) {
-		Objectify objectify = objectifyFactory.begin();
-		model.addAttribute("work", objectify.find(Work.class, id));
+		model.addAttribute("work", workDAO.findById(id));
 		return "view/edit";
 	}
 	
@@ -100,44 +94,48 @@ public class WorkController {
             return "work/edit";
         }
 		model.asMap().clear();
-		Objectify objectify = objectifyFactory.begin();
-		objectify.put(work);
+		workDAO.save(work);
         return "redirect:/work/list";
 	}
 	
 	@RequestMapping(value = "/search", method=RequestMethod.POST)
     public String search(Work search, BindingResult bindingResult, Model model, HttpServletRequest httpServletRequest) {
-        Objectify objectify = objectifyFactory.begin();
-                
-        Query<Work> query = objectify.query(Work.class);
+        
+        List<QueryFilter> filters = Lists.newArrayList();
         if (search.getPreservationLocationKey() != null) {
-            query.filter("preservationLocationKey", search.getPreservationLocationKey());
+        	filters.add(new QueryFilter("preservationLocationKey", search.getPreservationLocationKey()));
         }
         if (search.getPositiveTechniqueKey() != null) {
-            query.filter("positiveTechniqueKey", search.getPositiveTechniqueKey());
+        	filters.add(new QueryFilter("positiveTechniqueKey", search.getPositiveTechniqueKey()));
         }
         if (search.getNegativeTechniqueKey() != null) {
-            query.filter("negativeTechniqueKey", search.getNegativeTechniqueKey());
+        	filters.add(new QueryFilter("negativeTechniqueKey", search.getNegativeTechniqueKey()));
         }
         if (StringUtils.hasLength(search.getDescription())) {
-            query.filter("description >=", search.getDescription()).filter("description <", search.getDescription() + "\uFFFD"); 
+        	filters.add(new QueryFilter("description >=", search.getDescription()));
+        	filters.add(new QueryFilter("description <", search.getDescription() + "\uFFFD")); 
         }
         
-        Collection<Work> works = query.list();
+        List<Work> works = workDAO.findByFilters(filters);
         for (Work currentWork : works) {
-            if (currentWork.getNegativeTechniqueKeyAsLong() != null) {
-                currentWork.setNegativeTechnique(objectify.get(NegativeTechnique.class, currentWork.getNegativeTechniqueKeyAsLong()));
-            } 
-            if (currentWork.getPositiveTechniqueKeyAsLong() != null) {
-                currentWork.setPositiveTechnique(objectify.get(PositiveTechnique.class, currentWork.getPositiveTechniqueKeyAsLong()));
-            } 
-            if (currentWork.getPreservationLocationKeyAsLong() != null) {
-                currentWork.setPreservationLocation(objectify.get(PreservationLocation.class, currentWork.getPreservationLocationKeyAsLong()));
-            } 
+        	addRelations(currentWork);
+            
         }
         model.addAttribute("works", works);        
         model.addAttribute("search", search);
         
         return "work/list";
     }
+	
+	void addRelations(Work work) {
+		if (work.getNegativeTechniqueKeyAsLong() != null) {
+			work.setNegativeTechnique(negativeTechniqueDAO.findById(work.getNegativeTechniqueKeyAsLong()));
+        } 
+        if (work.getPositiveTechniqueKeyAsLong() != null) {
+        	work.setPositiveTechnique(positiveTechniqueDAO.findById(work.getPositiveTechniqueKeyAsLong()));
+        } 
+        if (work.getPreservationLocationKeyAsLong() != null) {
+        	work.setPreservationLocation(preservationLocationDAO.findById(work.getPreservationLocationKeyAsLong()));
+        } 
+	}
 }

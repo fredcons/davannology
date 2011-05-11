@@ -3,6 +3,7 @@ package org.fc.davannology.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.fc.davannology.dao.NegativeTechniqueDAO;
 import org.fc.davannology.model.NegativeTechnique;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,20 +13,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyFactory;
-
 @Controller
 @RequestMapping("/negativetechnique")
 public class NegativeTechniqueController {
 	
 	@Autowired 
-	private ObjectifyFactory objectifyFactory;
+	private NegativeTechniqueDAO negativeTechniqueDAO;
 
 	@RequestMapping(value = "/list")
 	public String list(Model model) {
-		Objectify objectify = objectifyFactory.begin();
-		model.addAttribute("negativeTechniques", objectify.query(NegativeTechnique.class).list());
+		model.addAttribute("negativeTechniques", negativeTechniqueDAO.findAll());
 		return "negativetechnique/list";
 	}
 	
@@ -37,8 +34,7 @@ public class NegativeTechniqueController {
 	
 	@RequestMapping(value = "/edit/{_id}") 
 	public String edit(@PathVariable("_id") Long id, Model model) {
-		Objectify objectify = objectifyFactory.begin();
-		model.addAttribute("negativeTechnique", objectify.find(NegativeTechnique.class, id));
+		model.addAttribute("negativeTechnique", negativeTechniqueDAO.findById(id));
 		return "negativetechnique/edit";
 	}
 	
@@ -49,15 +45,13 @@ public class NegativeTechniqueController {
             return "negativetechnique/edit";
         }
 		model.asMap().clear();
-		Objectify objectify = objectifyFactory.begin();
-		objectify.put(negativeTechnique);
+		negativeTechniqueDAO.save(negativeTechnique);
         return "redirect:/negativetechnique/list";
 	}
 	
 	@RequestMapping(value = "/delete/{_id}") 
     public String delete(@PathVariable("_id") Long id, Model model) {
-        Objectify objectify = objectifyFactory.begin();
-        objectify.delete(NegativeTechnique.class, id);
+		negativeTechniqueDAO.delete(id);
         return "redirect:/negativetechnique/list";
     }
 }

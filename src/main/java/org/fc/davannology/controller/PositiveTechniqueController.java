@@ -3,6 +3,7 @@ package org.fc.davannology.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.fc.davannology.dao.PositiveTechniqueDAO;
 import org.fc.davannology.model.PositiveTechnique;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,20 +13,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyFactory;
-
 @Controller
 @RequestMapping("/positivetechnique")
 public class PositiveTechniqueController {
 	
 	@Autowired 
-	private ObjectifyFactory objectifyFactory;
-
+	private PositiveTechniqueDAO positiveTechniqueDAO;
+	
 	@RequestMapping(value = "/list")
 	public String list(Model model) {
-		Objectify objectify = objectifyFactory.begin();
-		model.addAttribute("positiveTechniques", objectify.query(PositiveTechnique.class).list());
+		model.addAttribute("positiveTechniques", positiveTechniqueDAO.findAll());
 		return "positivetechnique/list";
 	}
 	
@@ -37,8 +34,7 @@ public class PositiveTechniqueController {
 	
 	@RequestMapping(value = "/edit/{_id}") 
 	public String edit(@PathVariable("_id") Long id, Model model) {
-		Objectify objectify = objectifyFactory.begin();
-		model.addAttribute("positiveTechnique", objectify.find(PositiveTechnique.class, id));
+		model.addAttribute("positiveTechnique", positiveTechniqueDAO.findById(id));
 		return "positivetechnique/edit";
 	}
 	
@@ -49,15 +45,13 @@ public class PositiveTechniqueController {
             return "positivetechnique/edit";
         }
 		model.asMap().clear();
-		Objectify objectify = objectifyFactory.begin();
-		objectify.put(positiveTechnique);
-        return "redirect:/positivetechnique/list";
+		positiveTechniqueDAO.save(positiveTechnique);
+		return "redirect:/positivetechnique/list";
 	}
 	
 	@RequestMapping(value = "/delete/{_id}") 
     public String delete(@PathVariable("_id") Long id, Model model) {
-        Objectify objectify = objectifyFactory.begin();
-        objectify.delete(PositiveTechnique.class, id);
-        return "redirect:/positivetechnique/list";
+        positiveTechniqueDAO.delete(id);
+		return "redirect:/positivetechnique/list";
     }
 }
