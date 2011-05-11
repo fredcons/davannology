@@ -3,23 +3,55 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     
+    <h2>Ajouter / modifier une oeuvre</h2>
     
-    <form:form action="/work/save" method="post" modelAttribute="work">
+    <form:form action="/work/save" method="post" modelAttribute="work" cssClass="form">
         <form:hidden path="id" />
-        <label for="description">Desc</label> <form:input id="description" path="description"/><br/><br/>
-        <label for="preservationLocation">Location</label>
-        <form:select path="preservationLocation">
-            <!-- form:option value="" label="Choisir"/-->
-            <form:options items="${preservationLocations}" itemValue="id" itemLabel="name"/>
-        </form:select><br/><br/>
-        <label for="positiveTechnique">Positif</label>
-        <form:select path="positiveTechnique">
-            <!-- form:option value="" label="Choisir"/-->
-            <form:options items="${positiveTechniques}" itemValue="id" itemLabel="name"/>
-        </form:select><br/><br/>
         
-        <input type="submit"/>
-    
+        <p>
+            <label for="description">Description</label> <form:input id="description" path="description"/>
+        </p>      
+        <p>
+            <label for="preservationLocation">Lieu de conservation</label>
+            <form:select id="preservationLocation" path="preservationLocationKeyAsLong">
+                <form:option value="" label="Choisir"/>
+                <form:options items="${preservationLocations}" itemValue="id" itemLabel="name"/>
+            </form:select>
+        </p> 
+        <p>
+            <label for="positiveTechnique">Positif</label>
+            <form:select id="positiveTechnique" path="positiveTechniqueKeyAsLong">
+                <form:option value="" label="Choisir"/>
+                <form:options items="${positiveTechniques}" itemValue="id" itemLabel="name"/>
+            </form:select>
+        </p>
+        <p>
+            <label for="negativeTechnique">Negatif</label>
+            <form:select id="negativeTechnique" path="negativeTechniqueKeyAsLong">
+                <form:option value="" label="Choisir"/>
+                <form:options items="${negativeTechniques}" itemValue="id" itemLabel="name"/>
+            </form:select>
+        </p>
+        <p>
+            <label for="dates">Dates</label> <form:input fullid="dates" path="dates"/>
+        </p>    
+        <p>
+            <label for="reference">Reference</label> <form:input id="reference" path="reference"/>
+        </p>
+        <p>    
+            <label for="comment">Commentaire</label> <form:textarea id="comment" path="comment" />
+        </p>
+        <p>    
+            <label for="width">Largeur</label> <form:input id="width" path="width"/>
+        </p>
+        <p>    
+            <label for="height">Hauteur</label> <form:input id="height" path="height"/>
+        </p>
+               
+        <div style="margin-left: 155px;">
+            <input type="submit" class="submit" />
+        </div>
+            
     </form:form>
 
 

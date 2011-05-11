@@ -3,9 +3,15 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     
-    <form:form action="/negativetechnique/save" method="post" modelAttribute="negativeTechnique">
+    <h2>Ajouter / modifier une technique de négatif</h2>
+    
+    <form:form action="/negativetechnique/save" method="post" modelAttribute="negativeTechnique" cssClass="form">
         <form:hidden path="id" />
-        <label for="name">Nom</label> <form:input id="name" path="name"/><br/>        
-        <input type="submit"/>    
+        <p>
+            <label for="name">Nom</label> <form:input id="name" path="name"/>
+        </p>            
+        <div style="margin-left: 155px;">
+            <input type="submit" class="submit" />
+        </div>     
     </form:form>
 </div>

@@ -1,0 +1,125 @@
+@main_font_family: 'Arvo', serif;
+
+body {
+  margin: 0px;
+  padding: 0px;
+  background: #fff;
+  font-family : 'Arvo', serif;  
+}
+#header {
+  width: 100%;
+  padding : 5px;
+}
+#leftmenu {
+  float: left;
+  width: 19%;
+  height: 700px;
+  padding : 5px;
+}
+#content {              
+  float: right;
+  width: 77%;
+  height: 700px;
+  padding : 5px;
+}
+#footer {
+  clear: both;
+  width: 100%;
+  padding : 5px;
+}
+
+a:link, a:visited, a:hover {
+    text-decoration : none; 
+    color : #000;
+}
+
+hr { 
+	border : none;
+	border-top : dotted 1px black ;
+}
+
+#item-list {
+    background: #fff;
+    border-collapse: collapse;
+    text-align: left;
+    font-size : 14px;
+}
+
+#item-list th {
+    padding: 10px 8px;
+    border-bottom: 2px solid #ccc;
+}
+
+#item-list td {
+    border-bottom: 1px solid #ccc;
+    padding: 6px 8px;
+}
+
+#item-list td.firstbutton {
+    border-bottom: 1px solid #ccc;
+    padding: 6px 8px 6px 60px;
+}
+
+#item-list tbody tr:hover td {
+    color: #009;
+}
+
+#leftmenu h4 {
+	margin-bottom: 3px;
+	margin-top: 5px;
+}
+
+#content h2 {
+	margin-bottom: 8px;
+    margin-top: 0px;
+}	
+
+#leftmenu ul {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}   
+
+#leftmenu ul li {
+	list-style-type: none;
+}
+
+/*Credits: Dynamic Drive CSS Library */
+/*URL: http://www.dynamicdrive.com/style/ */
+
+.form p{
+	width: 450px;
+	clear: left;
+	margin: 0;
+	padding: 5px 0 8px 0;
+	padding-left: 155px; /*width of left column containing the label elements*/
+	border-top: 1px dashed gray;
+	height: 1%;
+	font-size : 14px;
+}
+
+.form label{
+	float: left;
+	vertical-align : middle;
+	margin-left: -155px; /*width of left column*/
+	margin-top : 2px;
+	width: 150px; /*width of labels. Should be smaller than left column (155px) to create some right margin*/
+}
+
+.form input, select, textarea {
+    background-color: #fcfcfc;
+    border: 1px solid #ccc;
+    font-family : 'Arvo', serif;  
+    margin: 2px 0;
+    padding: 2px 4px;
+    width: 250px;
+}
+
+.form textarea {
+    height: 150px;
+}
+
+.form input.submit {
+	padding: 2px 4px;
+    width: 100px;
+}
+

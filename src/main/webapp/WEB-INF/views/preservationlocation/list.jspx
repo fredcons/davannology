@@ -3,8 +3,32 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     
-    <c:forEach items="${preservationLocations}" var="preservationLocation">
-        ${preservationLocation.id} / ${preservationLocation.name} <br/>
-    </c:forEach>
+    <h2>Liste des lieux de préservation</h2>
+    
+    <c:choose>
+        <c:when test="${not empty preservationLocations}">
+            <table id="item-list" summary="Liste des lieux de préservation">
+                <thead>
+                    <tr>
+                        <th scope="col">Nom</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach items="${preservationLocations}" var="preservationLocation">
+                        <tr>
+                            <td>${preservationLocation.name}</td>
+                            <td class="firstbutton"><a href="/preservationlocation/edit/${preservationLocation.id}">Modifier</a></td>
+                            <td><a href="/preservationlocation/delete/${preservationLocation.id}">Supprimer</a></td>
+                        </tr>                
+                    </c:forEach>
+                </tbody>
+            </table>
+        </c:when>
+        <c:otherwise>
+            Aucun lieu défini
+        </c:otherwise>    
+    </c:choose>
 
 </div>

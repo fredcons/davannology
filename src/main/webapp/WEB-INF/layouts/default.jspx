@@ -8,18 +8,19 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=8" />			
-		Davannology
 		<title>Davannology</title>
-	</head>
+        <link href='http://fonts.googleapis.com/css?family=Arvo' rel='stylesheet' type='text/css'><!-- xxx --></link>
+        <link href='/static/css/main.css' rel='stylesheet' type='text/css'><!-- xxx --></link>
+        <script type="text/javascript" src="/static/js/less-1.0.40.min.js"></script>  
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.min.js"><!-- xxx --></script>    
+    </head>
 	
-  	<body class="tundra spring">
-   		<div id="wrapper">
-		    <tiles:insertAttribute name="header" ignore="true" />
-		    <tiles:insertAttribute name="menu" ignore="true" />   
-		    <div id="main">
-	    		<tiles:insertAttribute name="body"/> 
-		    	<tiles:insertAttribute name="footer" ignore="true"/>
-		    </div>
-		</div>
+  	<body>   		
+	    <tiles:insertAttribute name="header" ignore="true" />
+	    <tiles:insertAttribute name="menu" ignore="true" />   
+	    <div id="content">
+    	  <tiles:insertAttribute name="body"/> 
+        </div>  
+	    <tiles:insertAttribute name="footer" ignore="true"/>		
 	</body>
 </html>

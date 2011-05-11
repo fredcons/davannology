@@ -12,6 +12,7 @@ import org.fc.davannology.model.Work;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
+import com.googlecode.objectify.Query;
 
 @Controller
 @RequestMapping("/work")
@@ -51,7 +53,20 @@ public class WorkController {
 	@RequestMapping(value = "/list")
 	public String list(Model model) {
 		Objectify objectify = objectifyFactory.begin();
-		model.addAttribute("works", objectify.query(Work.class).list());
+		Collection<Work> works = objectify.query(Work.class).list();
+		for (Work work : works) {
+		    if (work.getNegativeTechniqueKeyAsLong() != null) {
+		        work.setNegativeTechnique(objectify.find(NegativeTechnique.class, work.getNegativeTechniqueKeyAsLong()));
+		    } 
+		    if (work.getPositiveTechniqueKeyAsLong() != null) {
+                work.setPositiveTechnique(objectify.find(PositiveTechnique.class, work.getPositiveTechniqueKeyAsLong()));
+            } 
+		    if (work.getPreservationLocationKeyAsLong() != null) {
+                work.setPreservationLocation(objectify.find(PreservationLocation.class, work.getPreservationLocationKeyAsLong()));
+            } 
+		}
+		model.addAttribute("works", works);
+		model.addAttribute("search", new Work());
 		return "work/list";
 	}
 	
@@ -84,11 +99,45 @@ public class WorkController {
 			model.addAttribute("work", work);
             return "work/edit";
         }
-		System.out.println("preservation location : " + work.getPreservationLocation());
-		System.out.println("positive              : " + work.getPositiveTechnique());
 		model.asMap().clear();
 		Objectify objectify = objectifyFactory.begin();
 		objectify.put(work);
         return "redirect:/work/list";
 	}
+	
+	@RequestMapping(value = "/search", method=RequestMethod.POST)
+    public String search(Work search, BindingResult bindingResult, Model model, HttpServletRequest httpServletRequest) {
+        Objectify objectify = objectifyFactory.begin();
+                
+        Query<Work> query = objectify.query(Work.class);
+        if (search.getPreservationLocationKey() != null) {
+            query.filter("preservationLocationKey", search.getPreservationLocationKey());
+        }
+        if (search.getPositiveTechniqueKey() != null) {
+            query.filter("positiveTechniqueKey", search.getPositiveTechniqueKey());
+        }
+        if (search.getNegativeTechniqueKey() != null) {
+            query.filter("negativeTechniqueKey", search.getNegativeTechniqueKey());
+        }
+        if (StringUtils.hasLength(search.getDescription())) {
+            query.filter("description >=", search.getDescription()).filter("description <", search.getDescription() + "\uFFFD"); 
+        }
+        
+        Collection<Work> works = query.list();
+        for (Work currentWork : works) {
+            if (currentWork.getNegativeTechniqueKeyAsLong() != null) {
+                currentWork.setNegativeTechnique(objectify.get(NegativeTechnique.class, currentWork.getNegativeTechniqueKeyAsLong()));
+            } 
+            if (currentWork.getPositiveTechniqueKeyAsLong() != null) {
+                currentWork.setPositiveTechnique(objectify.get(PositiveTechnique.class, currentWork.getPositiveTechniqueKeyAsLong()));
+            } 
+            if (currentWork.getPreservationLocationKeyAsLong() != null) {
+                currentWork.setPreservationLocation(objectify.get(PreservationLocation.class, currentWork.getPreservationLocationKeyAsLong()));
+            } 
+        }
+        model.addAttribute("works", works);        
+        model.addAttribute("search", search);
+        
+        return "work/list";
+    }
 }

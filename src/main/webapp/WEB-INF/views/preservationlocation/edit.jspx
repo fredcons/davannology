@@ -3,12 +3,16 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     
+    <h2>Ajouter / modifier un lieu de préservation</h2>
     
-    <form:form action="/preservationlocation/save" method="post" modelAttribute="preservationLocation">
+    <form:form action="/preservationlocation/save" method="post" modelAttribute="preservationLocation" cssClass="form">
         <form:hidden path="id" />
-        <label for="name">Nom</label> <form:input id="name" path="name"/><br/>
-        
-        <input type="submit"/>
+        <p>
+            <label for="name">Nom</label> <form:input id="name" path="name"/>
+        </p>            
+        <div style="margin-left: 155px;">
+            <input type="submit" class="submit" />
+        </div>
     
     </form:form>
 

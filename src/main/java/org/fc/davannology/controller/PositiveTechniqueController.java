@@ -25,7 +25,7 @@ public class PositiveTechniqueController {
 	@RequestMapping(value = "/list")
 	public String list(Model model) {
 		Objectify objectify = objectifyFactory.begin();
-		model.addAttribute("positivetechniques", objectify.query(PositiveTechnique.class).list());
+		model.addAttribute("positiveTechniques", objectify.query(PositiveTechnique.class).list());
 		return "positivetechnique/list";
 	}
 	
@@ -53,4 +53,11 @@ public class PositiveTechniqueController {
 		objectify.put(positiveTechnique);
         return "redirect:/positivetechnique/list";
 	}
+	
+	@RequestMapping(value = "/delete/{_id}") 
+    public String delete(@PathVariable("_id") Long id, Model model) {
+        Objectify objectify = objectifyFactory.begin();
+        objectify.delete(PositiveTechnique.class, id);
+        return "redirect:/positivetechnique/list";
+    }
 }

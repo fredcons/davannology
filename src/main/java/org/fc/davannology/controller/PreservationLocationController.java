@@ -53,4 +53,11 @@ public class PreservationLocationController {
 		objectify.put(preservationLocation);
         return "redirect:/preservationlocation/list";
 	}
+	
+	@RequestMapping(value = "/delete/{_id}") 
+    public String delete(@PathVariable("_id") Long id, Model model) {
+        Objectify objectify = objectifyFactory.begin();
+        objectify.delete(PreservationLocation.class, id);
+        return "redirect:/preservationlocation/list";
+    }
 }

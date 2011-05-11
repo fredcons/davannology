@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:jsp="http://java.sun.com/JSP/Page" id="menu" version="2.0" width="200px">
+<div id="leftmenu" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
 	<jsp:directive.page contentType="text/html;charset=UTF-8"/>
-	<jsp:output omit-xml-declaration="yes"/>
-
-<div width="200px">Left menu</div>
-    
+	<jsp:output omit-xml-declaration="yes"/>    
+    <h4>Oeuvres</h4>
+    <ul>
+        <li><a href="/work/list">Lister</a></li>
+        <li><a href="/work/edit">Ajouter</a></li>
+    </ul>
+    <h4>Lieux de conservation</h4>
+    <ul>
+        <li><a href="/preservationlocation/list">Lister</a></li>
+        <li><a href="/preservationlocation/edit">Ajouter</a></li>
+    </ul>
+    <h4>Techniques positives</h4>
+    <ul>
+        <li><a href="/positivetechnique/list">Lister</a></li>
+        <li><a href="/positivetechnique/edit">Ajouter</a></li>
+    </ul>
+    <h4>Techniques négatives</h4>
+    <ul>
+        <li><a href="/negativetechnique/list">Lister</a></li>
+        <li><a href="/negativetechnique/edit">Ajouter</a></li>
+    </ul>
+        
 </div>

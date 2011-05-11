@@ -3,8 +3,31 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     
-    <c:forEach items="${negativetechniques}" var="negativetechnique">
-        ${negativetechnique.id} / ${negativetechnique.name} <br/>
-    </c:forEach>
-
+    <h2>Liste des techniques de négatif</h2>
+    
+    <c:choose>
+        <c:when test="${not empty negativeTechniques}">
+            <table id="item-list" summary="Liste des techniques de négatif">
+                <thead>
+                    <tr>
+                        <th scope="col">Nom</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach items="${negativeTechniques}" var="negativeTechnique">
+                        <tr>
+                            <td>${negativeTechnique.name}</td>
+                            <td class="firstbutton"><a href="/negativetechnique/edit/${negativeTechnique.id}">Modifier</a></td>
+                            <td><a href="/negativetechnique/delete/${negativeTechnique.id}">Supprimer</a></td>
+                        </tr>                
+                    </c:forEach>
+                </tbody>
+            </table>
+        </c:when>
+        <c:otherwise>
+            Aucune technique définie
+        </c:otherwise>
+    </c:choose>  
 </div>

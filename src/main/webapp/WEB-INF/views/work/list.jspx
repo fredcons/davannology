@@ -1,10 +1,75 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:form="http://www.springframework.org/tags/form" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     
-    <c:forEach items="${works}" var="work">
-        ${work.id} / ${work.description} <br/>
-    </c:forEach>
-
+    <h2>Liste des oeuvres</h2>
+    
+    <form:form action="/work/search" method="post" modelAttribute="search" cssClass="form">
+        <form:hidden path="id" />
+        
+        <p>
+            <label for="description">Description</label> <form:input id="description" path="description"/>
+        </p>
+        
+        <p>
+            <label for="preservationLocation">Location</label>
+            <form:select path="preservationLocationKeyAsLong">
+                <form:option value="" label="Choisir"/>
+                <form:options items="${preservationLocations}" itemValue="id" itemLabel="name"/>
+            </form:select>
+        </p>
+        
+        <p>
+            <label for="positiveTechnique">Positif</label>
+            <form:select path="positiveTechniqueKeyAsLong">
+                <form:option value="" label="Choisir"/>
+                <form:options items="${positiveTechniques}" itemValue="id" itemLabel="name"/>
+            </form:select>
+        </p>
+        
+        <p>
+            <label for="negativeTechnique">Negatif</label>
+            <form:select path="negativeTechniqueKeyAsLong">
+                <form:option value="" label="Choisir"/>
+                <form:options items="${negativeTechniques}" itemValue="id" itemLabel="name"/>
+            </form:select>
+        </p>
+        <div style="margin-left: 155px; margin-bottom:20px;">
+            <input type="submit" class="submit" />
+        </div>
+    
+    </form:form>
+    
+    <c:choose>
+        <c:when test="${not empty works}">
+            <table id="item-list" summary="Liste des oeuvres">
+                <thead>
+                    <tr>
+                        <th scope="col">Description</th>
+                        <th scope="col">Lieu</th>
+                        <th scope="col">Technique positive</th>
+                        <th scope="col">Technique négative</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach items="${works}" var="work">
+                        <tr>
+                            <td>${work.description}</td>
+                            <td><c:if test="${work.preservationLocation != null}">${work.preservationLocation.name}</c:if></td>
+                            <td><c:if test="${work.positiveTechnique != null}">${work.positiveTechnique.name}</c:if></td>
+                            <td><c:if test="${work.negativeTechnique != null}">${work.negativeTechnique.name}</c:if></td>
+                            <td class="firstbutton"><a href="/work/edit/${work.id}">Modifier</a></td>
+                            <td><a href="/work/delete/${work.id}">Supprimer</a></td>
+                        </tr>                
+                    </c:forEach>
+                </tbody>
+            </table>
+        </c:when>
+        <c:otherwise>
+            Aucune oeuvre définie
+        </c:otherwise>    
+    </c:choose>
 </div>

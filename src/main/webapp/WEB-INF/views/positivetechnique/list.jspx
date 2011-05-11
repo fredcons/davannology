@@ -3,8 +3,31 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     
-    <c:forEach items="${positivetechniques}" var="positivetechnique">
-        ${positivetechnique.id} / ${positivetechnique.name} <br/>
-    </c:forEach>
-
+    <h2>Liste des techniques de positif</h2>
+    
+    <c:choose>
+        <c:when test="${not empty positiveTechniques}">
+            <table id="item-list" summary="Liste des techniques de positif">
+                <thead>
+                    <tr>
+                        <th scope="col">Nom</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach items="${positiveTechniques}" var="positiveTechnique">
+                        <tr>
+                            <td>${positiveTechnique.name}</td>
+                            <td class="firstbutton"><a href="/positivetechnique/edit/${positiveTechnique.id}">Modifier</a></td>
+                            <td><a href="/positivetechnique/delete/${positiveTechnique.id}">Supprimer</a></td>
+                        </tr>                
+                    </c:forEach>
+                </tbody>
+            </table>
+        </c:when>
+        <c:otherwise>
+            Aucune technique définie
+        </c:otherwise>    
+    </c:choose>
 </div>
