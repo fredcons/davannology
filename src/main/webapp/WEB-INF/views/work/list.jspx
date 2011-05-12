@@ -5,6 +5,10 @@
     
     <h2>Liste des oeuvres</h2>
     
+    <c:if test="${not empty message}">
+        <div id="message" class="${message.type}">${message.text}</div> 
+    </c:if>
+    
     <form:form action="/work/search" method="post" modelAttribute="search" cssClass="form">
         <form:hidden path="id" />
         

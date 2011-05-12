@@ -14,6 +14,7 @@ import org.fc.davannology.model.NegativeTechnique;
 import org.fc.davannology.model.PositiveTechnique;
 import org.fc.davannology.model.PreservationLocation;
 import org.fc.davannology.model.Work;
+import org.fc.davannology.web.FlashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -84,6 +85,13 @@ public class WorkController {
 		return "view/edit";
 	}
 	
+	@RequestMapping(value = "/delete/{_id}") 
+    public String delete(@PathVariable("_id") Long id, Model model) {
+        workDAO.delete(id);
+        FlashMap.setSuccessMessage("Donnée supprimée");
+        return "view/edit";
+    }
+	
 	@RequestMapping(value = "/save", method=RequestMethod.POST)
 	public String save(@Valid Work work, BindingResult bindingResult, Model model, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
@@ -95,6 +103,7 @@ public class WorkController {
         }
 		model.asMap().clear();
 		workDAO.save(work);
+		FlashMap.setSuccessMessage("Donnée sauvée");
         return "redirect:/work/list";
 	}
 	

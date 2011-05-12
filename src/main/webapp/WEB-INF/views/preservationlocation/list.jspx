@@ -5,6 +5,10 @@
     
     <h2>Liste des lieux de préservation</h2>
     
+    <c:if test="${not empty message}">
+        <div id="message" class="${message.type}">${message.text}</div> 
+    </c:if>
+    
     <c:choose>
         <c:when test="${not empty preservationLocations}">
             <table id="item-list" summary="Liste des lieux de préservation">

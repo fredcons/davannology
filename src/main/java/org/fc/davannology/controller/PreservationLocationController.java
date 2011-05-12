@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import org.fc.davannology.dao.PreservationLocationDAO;
 import org.fc.davannology.model.PreservationLocation;
+import org.fc.davannology.web.FlashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,12 +47,14 @@ public class PreservationLocationController {
         }
 		model.asMap().clear();
 		preservationLocationDAO.save(preservationLocation);
+		FlashMap.setSuccessMessage("Donnée sauvée");
         return "redirect:/preservationlocation/list";
 	}
 	
 	@RequestMapping(value = "/delete/{_id}") 
     public String delete(@PathVariable("_id") Long id, Model model) {
 		preservationLocationDAO.delete(id);
+		FlashMap.setSuccessMessage("Donnée supprimée");
         return "redirect:/preservationlocation/list";
     }
 }

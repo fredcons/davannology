@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import org.fc.davannology.dao.NegativeTechniqueDAO;
 import org.fc.davannology.model.NegativeTechnique;
+import org.fc.davannology.web.FlashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,12 +47,14 @@ public class NegativeTechniqueController {
         }
 		model.asMap().clear();
 		negativeTechniqueDAO.save(negativeTechnique);
+		FlashMap.setSuccessMessage("Donnée sauvée");
         return "redirect:/negativetechnique/list";
 	}
 	
 	@RequestMapping(value = "/delete/{_id}") 
     public String delete(@PathVariable("_id") Long id, Model model) {
 		negativeTechniqueDAO.delete(id);
+		FlashMap.setSuccessMessage("Donnée supprimée");
         return "redirect:/negativetechnique/list";
     }
 }
