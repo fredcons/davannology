@@ -22,5 +22,10 @@
         <li><a href="/negativetechnique/list">Lister</a></li>
         <li><a href="/negativetechnique/edit">Ajouter</a></li>
     </ul>
+    <h4>Administration</h4>
+    <ul>
+        <li><a href="/dataimport/form">Importer un fichier</a></li>
+        <li><a href="/dataimport/confirmdelete">Tout supprimer</a></li>
+    </ul>
         
 </div>

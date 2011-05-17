@@ -47,6 +47,9 @@
         <p>    
             <label for="height">Hauteur</label> <form:input id="height" path="height"/>
         </p>
+        <p>    
+            <label for="depth">Profondeur</label> <form:input id="depth" path="depth"/>
+        </p>
                
         <div style="margin-left: 155px;">
             <input type="submit" class="submit" />

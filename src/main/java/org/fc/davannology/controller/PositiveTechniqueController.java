@@ -3,6 +3,7 @@ package org.fc.davannology.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.fc.davannology.dao.Paging;
 import org.fc.davannology.dao.PositiveTechniqueDAO;
 import org.fc.davannology.model.PositiveTechnique;
 import org.fc.davannology.web.FlashMap;
@@ -23,7 +24,7 @@ public class PositiveTechniqueController {
 	
 	@RequestMapping(value = "/list")
 	public String list(Model model) {
-		model.addAttribute("positiveTechniques", positiveTechniqueDAO.findAll());
+		model.addAttribute("positiveTechniques", positiveTechniqueDAO.findAll(Paging.DEFAULT_NAME_PAGING));
 		return "positivetechnique/list";
 	}
 	

@@ -56,16 +56,18 @@
                         <th scope="col">Technique négative</th>
                         <th scope="col"></th>
                         <th scope="col"></th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <c:forEach items="${works}" var="work">
                         <tr>
-                            <td>${work.description}</td>
+                            <td width="250px">${work.description}</td>
                             <td><c:if test="${work.preservationLocation != null}">${work.preservationLocation.name}</c:if></td>
                             <td><c:if test="${work.positiveTechnique != null}">${work.positiveTechnique.name}</c:if></td>
                             <td><c:if test="${work.negativeTechnique != null}">${work.negativeTechnique.name}</c:if></td>
                             <td class="firstbutton"><a href="/work/edit/${work.id}">Modifier</a></td>
+                            <td><a href="/work/view/${work.id}">Voir</a></td>
                             <td><a href="/work/delete/${work.id}">Supprimer</a></td>
                         </tr>                
                     </c:forEach>

@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.fc.davannology.dao.NegativeTechniqueDAO;
+import org.fc.davannology.dao.Paging;
 import org.fc.davannology.dao.PositiveTechniqueDAO;
 import org.fc.davannology.dao.PreservationLocationDAO;
 import org.fc.davannology.dao.QueryFilter;
@@ -43,17 +44,17 @@ public class WorkController {
 	
 	@ModelAttribute("preservationLocations")
 	public List<PreservationLocation> populatePreservationLocations() {
-		return preservationLocationDAO.findAll();
+		return preservationLocationDAO.findAll(Paging.DEFAULT_NAME_PAGING);
 	}
 	
 	@ModelAttribute("positiveTechniques")
 	public List<PositiveTechnique> populatePositiveTechniques() {
-		return positiveTechniqueDAO.findAll();
+		return positiveTechniqueDAO.findAll(Paging.DEFAULT_NAME_PAGING);
 	}
 	
 	@ModelAttribute("negativeTechniques")
 	public List<NegativeTechnique> populateNegativeTechniques() {
-		return negativeTechniqueDAO.findAll();
+		return negativeTechniqueDAO.findAll(Paging.DEFAULT_NAME_PAGING);
 	}
 
 	@RequestMapping(value = "/list")
@@ -81,8 +82,10 @@ public class WorkController {
 	
 	@RequestMapping(value = "/view/{_id}") 
 	public String view(@PathVariable("_id") Long id, Model model) {
-		model.addAttribute("work", workDAO.findById(id));
-		return "view/edit";
+		Work work = workDAO.findById(id);
+	    addRelations(work);
+		model.addAttribute("work", work);		
+		return "work/view";
 	}
 	
 	@RequestMapping(value = "/delete/{_id}") 

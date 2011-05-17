@@ -3,10 +3,10 @@
   <jsp:output omit-xml-declaration="yes" />
   <util:panel id="title" title="Titre">
     <h3>
-      Welcome
+      Bienvenue sur Davannology
     </h3>
     <p>
-      Welcome text
+      
     </p>
   </util:panel>
 </div>

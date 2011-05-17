@@ -3,6 +3,7 @@ package org.fc.davannology.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.fc.davannology.dao.Paging;
 import org.fc.davannology.dao.PreservationLocationDAO;
 import org.fc.davannology.model.PreservationLocation;
 import org.fc.davannology.web.FlashMap;
@@ -23,7 +24,7 @@ public class PreservationLocationController {
 
 	@RequestMapping(value = "/list")
 	public String list(Model model) {
-		model.addAttribute("preservationLocations", preservationLocationDAO.findAll());
+		model.addAttribute("preservationLocations", preservationLocationDAO.findAll(Paging.DEFAULT_NAME_PAGING));
 		return "preservationlocation/list";
 	}
 	

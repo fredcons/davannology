@@ -5,6 +5,7 @@ body {
   padding: 0px;
   background: #fff;
   font-family : 'Arvo', serif;  
+  font-size : 14px;
 }
 #header {
   width: 100%;
@@ -12,13 +13,13 @@ body {
 }
 #leftmenu {
   float: left;
-  width: 19%;
+  width: 15%;
   height: 700px;
   padding : 5px;
 }
 #content {              
   float: right;
-  width: 77%;
+  width: 81%;
   height: 700px;
   padding : 5px;
 }
@@ -42,7 +43,7 @@ hr {
     background: #fff;
     border-collapse: collapse;
     text-align: left;
-    font-size : 14px;
+    font-size : 12px;
 }
 
 #item-list th {
@@ -61,7 +62,7 @@ hr {
 }
 
 #item-list tbody tr:hover td {
-    color: #009;
+    color: #ccc;
 }
 
 #leftmenu h4 {
@@ -86,7 +87,7 @@ hr {
 /*Credits: Dynamic Drive CSS Library */
 /*URL: http://www.dynamicdrive.com/style/ */
 
-.form p{
+.form p, .view p{
 	width: 450px;
 	clear: left;
 	margin: 0;
@@ -94,7 +95,7 @@ hr {
 	padding-left: 155px; /*width of left column containing the label elements*/
 	border-top: 1px dashed gray;
 	height: 1%;
-	font-size : 14px;
+	font-size : 12px;
 }
 
 .form label{
@@ -105,6 +106,14 @@ hr {
 	width: 150px; /*width of labels. Should be smaller than left column (155px) to create some right margin*/
 }
 
+.view label{
+    float: left;
+    vertical-align : middle;
+    margin-left: -155px; /*width of left column*/
+    margin-top : 2px;
+    width: 150px; /*width of labels. Should be smaller than left column (155px) to create some right margin*/
+}
+
 .form input, select, textarea {
     background-color: #fcfcfc;
     border: 1px solid #ccc;
@@ -112,6 +121,7 @@ hr {
     margin: 2px 0;
     padding: 2px 4px;
     width: 250px;
+    font-size : 12px;
 }
 
 .form textarea {
@@ -119,7 +129,13 @@ hr {
 }
 
 .form input.submit {
-	padding: 2px 4px;
+    padding: 2px 4px;
     width: 100px;
+}
+
+.view span.label {
+    margin: 2px 0;
+    padding: 2px 4px;
+    width: 250px;
 }
 

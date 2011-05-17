@@ -1,5 +1,6 @@
 package org.fc.davannology.web;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,7 +55,7 @@ public final class FlashMap {
 
 	private static final String MESSAGE_KEY = "message";
 
-	public static final class Message {
+	public static final class Message implements Serializable {
 		
 		private final MessageType type;
 		

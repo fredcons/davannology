@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core"  xmlns:form="http://www.springframework.org/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    
+    <h2>Importer un fichier</h2>
+    
+    <form:form action="/dataimport/save" method="post" cssClass="form" enctype="multipart/form-data">
+        <p>
+            <label for="name">Fichier</label> <input type="file" name="importFile"/>
+        </p>            
+        <div style="margin-left: 155px;">
+            <input type="submit" class="submit" />
+        </div>     
+    </form:form>
+</div>
+

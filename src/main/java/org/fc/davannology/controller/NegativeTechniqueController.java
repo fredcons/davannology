@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.fc.davannology.dao.NegativeTechniqueDAO;
+import org.fc.davannology.dao.Paging;
 import org.fc.davannology.model.NegativeTechnique;
 import org.fc.davannology.web.FlashMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class NegativeTechniqueController {
 
 	@RequestMapping(value = "/list")
 	public String list(Model model) {
-		model.addAttribute("negativeTechniques", negativeTechniqueDAO.findAll());
+		model.addAttribute("negativeTechniques", negativeTechniqueDAO.findAll(Paging.DEFAULT_NAME_PAGING));
 		return "negativetechnique/list";
 	}
 	

@@ -25,23 +25,57 @@ public class AbstractObjectifyDAO<T> {
 		objectify.delete(getPersistentClass(), id);
 	}
 	
+	public void deleteAll() {
+		Objectify objectify = objectifyFactory.begin();
+		objectify.delete(findAll());
+	}
+	
 	public void save(T object) {
 		Objectify objectify = objectifyFactory.begin();
 		objectify.put(object);
 	}
 	
 	public List<T> findAll() {
-		Objectify objectify = objectifyFactory.begin();
-		return objectify.query(getPersistentClass()).list();
+		return findAll(null);
+	}
+	
+	public List<T> findAll(Paging paging) {
+		return findByFilters(null, paging);
 	}
 	
 	public List<T> findByFilters(List<QueryFilter> filters) {
+		return findByFilters(filters, null);
+	}
+	
+	public List<T> findByFilters(List<QueryFilter> filters, Paging paging) {
 		Objectify objectify = objectifyFactory.begin();
 		Query<T> query = objectify.query(getPersistentClass());
-		for (QueryFilter filter : filters) {
-			query.filter(filter.getCondition(), filter.getValue());
+		if (filters != null) {
+			for (QueryFilter filter : filters) {
+				query.filter(filter.getCondition(), filter.getValue());
+			}
 		}
+		if (paging != null) {
+			if (paging.getOffset() >= 0) {
+				query.offset(paging.getOffset());
+			}
+			if (paging.getItemsPerPage() > 0) {
+				query.limit(paging.getItemsPerPage());
+			}	
+			if (paging.getSort() != null) {
+				System.out.println("Using sort : " + paging.getSort());
+				query.order(paging.getSort());
+			}
+		}			
 		return query.list();
+	}
+	
+	public T findUniqueByFilters(List<QueryFilter> filters) {
+		List<T> list = findByFilters(filters);
+		if (list.size() > 0) {
+			return list.get(0);
+		}
+		return null;
 	}
 	
 	@SuppressWarnings("unchecked")

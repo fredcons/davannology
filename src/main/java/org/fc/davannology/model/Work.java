@@ -4,6 +4,7 @@ import javax.persistence.Id;
 import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.util.StringUtils;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
@@ -24,6 +25,7 @@ public class Work {
 	
 	private Integer width;
 	private Integer height;
+	private Integer depth;
 	@Length(max=500)
 	private String reference;
 	@Length(max=500)
@@ -177,6 +179,19 @@ public class Work {
 	}
 	
 	/**
+	 * @param width the width to set
+	 */
+	public void setWidth(String widthAsString) {
+		if (StringUtils.hasLength(widthAsString)) {
+			try {
+				width = Integer.valueOf(widthAsString);
+			} catch  (Exception e) {
+				// no-op
+			}
+		}
+	}
+	
+	/**
 	 * @return the height
 	 */
 	public Integer getHeight() {
@@ -188,6 +203,19 @@ public class Work {
 	 */
 	public void setHeight(Integer height) {
 		this.height = height;
+	}
+		
+	/**
+	 * @param width the width to set
+	 */
+	public void setHeight(String heightAsString) {
+		if (StringUtils.hasLength(heightAsString)) {
+			try {
+				height = Integer.valueOf(heightAsString);
+			} catch  (Exception e) {
+				// no-op
+			}
+		}
 	}
 	
 	/**
@@ -260,6 +288,31 @@ public class Work {
         this.preservationLocation = preservationLocation;
     }
 
-	
+	/**
+	 * @return the depth
+	 */
+	public Integer getDepth() {
+		return depth;
+	}
+
+	/**
+	 * @param depth the depth to set
+	 */
+	public void setDepth(Integer depth) {
+		this.depth = depth;
+	}
+
+	/**
+	 * @param depth the depth to set
+	 */
+	public void setDepth(String depthAsString) {
+		if (StringUtils.hasLength(depthAsString)) {
+			try {
+				depth = Integer.valueOf(depthAsString);
+			} catch  (Exception e) {
+				// no-op
+			}
+		}
+	}
 	
 }
